@@ -28,4 +28,49 @@
   <h1>🎉 Welcome to The Big Gong Puzzle 🎉</h1>
   <p><strong>Instructions:</strong> Click the buttons below to draw your Character Card and Information Cards. Each student should draw <strong>1 character</strong> and <strong>2 information cards</strong>. If there are fewer than 8 students, volunteer to draw extra cards!</p>
 
-  <button
+  <button onclick="drawCard('character')">🎭 Draw a Character Card</button>
+  <button onclick="drawCard('info')">🧠 Draw an Info Card</button>
+
+  <div id="output" class="card-box"></div>
+
+  <script>
+    const characterCards = [
+      "You are Maluiks. You are depressed and will only speak to your wife or a psychologist. You are a master builder.",
+      "You are Quil. You are Maluiks’ wife. You are not a builder.",
+      "You are Paba. You are a master builder. You only work when a woman from your village issues a special request in ALL CAPS.",
+      "You are Marjoi. You know where the key is, but will only tell someone of your gender on a full moon night.",
+      "You are Marlis. You are a psychologist who enjoys building.",
+      "You are Wekli. You feed the village. Give paper clips to activate workers.",
+      "You are Oilki. You are not a builder.",
+      "You are Polkadot. You are not a builder."
+    ];
+
+    const infoCards = [
+      "The Big Gong box brings prosperity to the village.",
+      "To open the box, you need 3 master builders and 2 assistants who are not builders but like to build.",
+      "There is a full moon right now.",
+      "A master builder has built at least 3 pyramids and 10 homes.",
+      "Maluiks has built 5 pyramids and 20 homes.",
+      "Paba is a master builder who only works when a woman gives him a request in ALL CAPS.",
+      "Marjoi knows the key location but only tells same-gender peers on full moon nights.",
+      "Wekli feeds workers. No food = no work.",
+      "Marlis is a psychologist who enjoys building.",
+      "The professor has paper clips.",
+      "One of the master builders is another's arch-enemy.",
+      "The Gong crate opens only during full moons.",
+      "Yulk is Maluiks' arch-enemy and won’t work with him.",
+      "There are legends of a past Gong ceremony.",
+      "Tetris is a builder who lives far away.",
+      "The Gong was blessed by village elders."
+    ];
+
+    function drawCard(type) {
+      const pool = type === 'character' ? characterCards : infoCards;
+      const card = pool[Math.floor(Math.random() * pool.length)];
+      const output = document.getElementById("output");
+      output.innerHTML = `<p><strong>${type === 'character' ? 'Character Card' : 'Information Card'}:</strong><br>${card}</p>`;
+    }
+  </script>
+
+</body>
+</html>
