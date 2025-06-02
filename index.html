@@ -100,7 +100,7 @@
 
     function checkAnswer() {
       const correctBuilders = ["maluiks", "paba", "marjoi"];
-      const correctAssistants = ["wekl i", "quil"];
+      const correctAssistants = ["wekli", "quil"];
       const correctKey = "therealrules";
 
       const userBuilders = document.getElementById("builders").value.toLowerCase().split(',').map(b => normalize(b));
@@ -110,8 +110,13 @@
       const result = document.getElementById("result");
 
       const buildersMatch = correctBuilders.every(b => userBuilders.includes(b)) && userBuilders.length === 3;
-      const assistantsMatch = correctAssistants.every(a => userAssistants.includes(a)) && userAssistants.length === 2;
-      const keyMatch = userKey === correctKey;
+   function arraysMatch(actual, expected) {
+  const norm = arr => arr.map(e => e.toLowerCase().replace(/\s+/g, '')).sort().join(',');
+  return norm(actual) === norm(expected);
+}
+
+const buildersMatch = arraysMatch(userBuilders, correctBuilders);
+const assistantsMatch = arraysMatch(userAssistants, correctAssistants);
 
       if (buildersMatch && assistantsMatch && keyMatch) {
         result.innerHTML = `
