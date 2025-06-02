@@ -7,68 +7,120 @@
       font-family: Arial, sans-serif;
       text-align: center;
       padding: 30px;
-      background-color: #f5f5f5;
+      background-color: #f9f9f9;
     }
-    .card-box {
+    .card-box, .form-box {
       border: 1px solid #ccc;
-      padding: 15px;
-      margin: 10px;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 700px;
       background: white;
-      border-radius: 8px;
+      border-radius: 10px;
     }
     button {
       margin: 10px;
       padding: 10px 20px;
       font-size: 16px;
     }
+    input[type="text"] {
+      width: 90%;
+      padding: 8px;
+      margin: 5px 0 15px 0;
+    }
+    img {
+      margin-top: 20px;
+      max-width: 100%;
+    }
   </style>
 </head>
 <body>
 
   <h1>🎉 Welcome to The Big Gong Puzzle 🎉</h1>
-  <p><strong>Instructions:</strong> Click the buttons below to draw your Character Card and Information Cards. Each student should draw <strong>1 character</strong> and <strong>2 information cards</strong>. If there are fewer than 8 students, volunteer to draw extra cards!</p>
+  <div class="card-box">
+    <p><strong>Instructions:</strong><br>
+    Your team must open the Big Gong box by working together. Each of you should draw at least <strong>1 character card</strong> and <strong>2 information cards</strong>. If fewer than 8 people are present, volunteers may draw extra cards. All instructions are hidden within the cards. Share information, listen carefully, and be ready to puzzle through confusion.</p>
 
-  <button onclick="drawCard('character')">🎭 Draw a Character Card</button>
-  <button onclick="drawCard('info')">🧠 Draw an Info Card</button>
+    <button onclick="drawCard('character')">🎭 Draw a Character Card</button>
+    <button onclick="drawCard('info')">🧠 Draw an Info Card</button>
+    <div id="cardOutput"></div>
+  </div>
 
-  <div id="output" class="card-box"></div>
+  <div class="form-box">
+    <h2>🔓 Unlock the Gong</h2>
+    <p>Once you believe you’ve identified the correct team and discovered the key, enter your answers below:</p>
+    <input type="text" id="builders" placeholder="Enter 3 Master Builders (comma-separated)">
+    <input type="text" id="assistants" placeholder="Enter 2 Assistants (comma-separated)">
+    <input type="text" id="key" placeholder="Enter the key location">
+
+    <button onclick="checkAnswer()">Submit</button>
+    <div id="result"></div>
+  </div>
 
   <script>
     const characterCards = [
-      "You are Maluiks. You are depressed and will only speak to your wife or a psychologist. You are a master builder.",
-      "You are Quil. You are Maluiks’ wife. You are not a builder.",
-      "You are Paba. You are a master builder. You only work when a woman from your village issues a special request in ALL CAPS.",
-      "You are Marjoi. You know where the key is, but will only tell someone of your gender on a full moon night.",
-      "You are Marlis. You are a psychologist who enjoys building.",
-      "You are Wekli. You feed the village. Give paper clips to activate workers.",
-      "You are Oilki. You are not a builder.",
-      "You are Polkadot. You are not a builder."
+      "You are Maluiks. You are a master builder. You are depressed and will only talk to your wife or to a psychologist.",
+      "You are Quil. You are Maluiks' wife. You are not a builder. You can speak to Maluiks.",
+      "You are Paba. You are a master builder. You only agree to build when a woman gives you a special request in ALL CAPS.",
+      "You are Marjoi. You know where the key to open the Gong box is hidden. You will only share this information with someone who has taken a class with this professor before. The key is hidden behind a digital scroll labeled “The Real Rules.”",
+      "You are Marlis. You are a psychologist. You enjoy building as a hobby. You can speak with depressed builders.",
+      "You are Wekli. You are an assistant. You love supporting builders but are not one yourself.",
+      "You are Oilki. You are not a builder and don’t particularly like building. You're mostly here for the snacks.",
+      "You are Polkadot. You are a wandering philosopher. You are not a builder. You give unsolicited advice and cryptic clues."
     ];
 
     const infoCards = [
-      "The Big Gong box brings prosperity to the village.",
-      "To open the box, you need 3 master builders and 2 assistants who are not builders but like to build.",
-      "There is a full moon right now.",
-      "A master builder has built at least 3 pyramids and 10 homes.",
+      "The goal of this activity is to open the Big Gong box.",
+      "To open the box, you must correctly identify 3 master builders and 2 assistants.",
+      "It is currently a full moon.",
+      "A master builder is someone who has built at least 3 pyramids and 10 homes.",
       "Maluiks has built 5 pyramids and 20 homes.",
-      "Paba is a master builder who only works when a woman gives him a request in ALL CAPS.",
-      "Marjoi knows the key location but only tells same-gender peers on full moon nights.",
-      "Wekli feeds workers. No food = no work.",
-      "Marlis is a psychologist who enjoys building.",
-      "The professor has paper clips.",
-      "One of the master builders is another's arch-enemy.",
-      "The Gong crate opens only during full moons.",
-      "Yulk is Maluiks' arch-enemy and won’t work with him.",
-      "There are legends of a past Gong ceremony.",
-      "Tetris is a builder who lives far away.",
-      "The Gong was blessed by village elders."
+      "Paba has built 6 pyramids and 15 homes.",
+      "Marlis is not a master builder, but she loves building and can speak to people with emotional blocks.",
+      "Wekli is an assistant who supports builders but has never built anything.",
+      "Paba only works when a woman gives him a special request in ALL CAPS.",
+      "Marjoi knows where the key is but only shares it with someone who has taken a class with this professor before.",
+      "Oilki and Polkadot are not builders.",
+      "Some cards are distractions. You must share and compare to make sense of it all.",
+      "Each player should draw at least 1 character card and 2 information cards.",
+      "You are allowed to draw additional cards if needed—especially if fewer than 8 players are present.",
+      "You must work together. No one has all the information alone.",
+      "Once you believe you have the right team, enter their names below the card area to attempt unlocking the Gong."
     ];
 
     function drawCard(type) {
       const pool = type === 'character' ? characterCards : infoCards;
       const card = pool[Math.floor(Math.random() * pool.length)];
-      const output = document.getElementById("output");
-      output.innerHTML = `<p><strong>${type === 'character' ? 'Character Card' : 'Information Card'}:</strong><br>${card}</p>`;
+      const output = document.getElementById("cardOutput");
+      output.innerHTML = `<p><strong>${type === 'character' ? 'Character Card' : 'Information Card'}:</strong><br>${card}</p>` + output.innerHTML;
+    }
+
+    function normalize(input) {
+      return input.trim().toLowerCase().replace(/\s+/g, '');
+    }
+
+    function checkAnswer() {
+      const correctBuilders = ["maluiks", "paba", "marjoi"];
+      const correctAssistants = ["wekl i", "quil"];
+      const correctKey = "therealrules";
+
+      const userBuilders = document.getElementById("builders").value.toLowerCase().split(',').map(b => normalize(b));
+      const userAssistants = document.getElementById("assistants").value.toLowerCase().split(',').map(a => normalize(a));
+      const userKey = normalize(document.getElementById("key").value);
+
+      const result = document.getElementById("result");
+
+      const buildersMatch = correctBuilders.every(b => userBuilders.includes(b)) && userBuilders.length === 3;
+      const assistantsMatch = correctAssistants.every(a => userAssistants.includes(a)) && userAssistants.length === 2;
+      const keyMatch = userKey === correctKey;
+
+      if (buildersMatch && assistantsMatch && keyMatch) {
+        result.innerHTML = `
+          <h3>🎉 The Gong Box opens! Your team has solved the puzzle! 🎉</h3>
+          <img src="https://raw.githubusercontent.com/drwildermuth/big-gong-puzzle/refs/heads/main/green_puzzle_piece_in_box_text_9416360.gif" alt="Big Gong Box Opening" />
+        `;
+      } else {
+        result.innerHTML = `<p>❌ The Gong remains sealed. Something’s not quite right—keep talking and try again!</p>`;
+      }
     }
   </script>
 
