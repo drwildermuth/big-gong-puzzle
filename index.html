@@ -113,26 +113,37 @@
       return norm(actual) === norm(expected);
     }
 
-    function checkSolution() {
-      const userBuilders = document.getElementById("builders").value.split(",").map(e => e.trim());
-      const userAssistants = document.getElementById("assistants").value.split(",").map(e => e.trim());
-      const userKey = normalize(document.getElementById("key").value);
+  function checkSolution() {
+  const userBuilders = document.getElementById("builders").value
+    .toLowerCase()
+    .replace(/\s+and\s+/g, ',')
+    .split(',')
+    .map(e => e.trim());
 
-      const buildersMatch = arraysMatch(userBuilders, correctBuilders);
-      const assistantsMatch = arraysMatch(userAssistants, correctAssistants);
-      const keyMatch = acceptableKeyAnswers.includes(userKey);
+  const userAssistants = document.getElementById("assistants").value
+    .toLowerCase()
+    .replace(/\s+and\s+/g, ',')
+    .split(',')
+    .map(e => e.trim());
 
-      const resultDiv = document.getElementById("result");
-      const gif = document.getElementById("celebrationGif");
+  const userKey = normalize(document.getElementById("key").value);
 
-      if (buildersMatch && assistantsMatch && keyMatch) {
-        resultDiv.innerText = "✅ Gong Unlocked! You did it!";
-        gif.style.display = "block";
-      } else {
-        resultDiv.innerText = "❌ The Gong remains sealed. Something’s not quite right—keep talking and try again!";
-        gif.style.display = "none";
-      }
-    }
+  const buildersMatch = arraysMatch(userBuilders, correctBuilders);
+  const assistantsMatch = arraysMatch(userAssistants, correctAssistants);
+  const keyMatch = acceptableKeyAnswers.includes(userKey);
+
+  const resultDiv = document.getElementById("result");
+  const gif = document.getElementById("celebrationGif");
+
+  if (buildersMatch && assistantsMatch && keyMatch) {
+    resultDiv.innerText = "✅ Gong Unlocked! You did it!";
+    gif.style.display = "block";
+  } else {
+    resultDiv.innerText = "❌ The Gong remains sealed. Something’s not quite right—keep talking and try again!";
+    gif.style.display = "none";
+  }
+}
+
   </script>
 </body>
 </html>
