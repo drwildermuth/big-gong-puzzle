@@ -98,7 +98,8 @@
 
     const correctBuilders = ["paba", "maluiks", "marjoi"];
     const correctAssistants = ["wekli", "quil"];
-    const acceptableKeyAnswers = ["temple", "thetemple", "the temple", "the temple."];
+  const acceptableKeyAnswers = ["temple", "thetemple", "the temple", "the temple."].map(normalize);
+
 
     function normalize(input) {
       return input.toLowerCase()
