@@ -62,6 +62,15 @@
   <img id="celebrationGif" style="display:none;" src="https://raw.githubusercontent.com/drwildermuth/big-gong-puzzle/refs/heads/main/green_puzzle_piece_in_box_text_9416360.gif" alt="Puzzle Solved!">
 
   <script>
+    function normalize(input) {
+      return input.toLowerCase()
+                  .replace(/\band\b/g, '')
+                  .replace(/\s+/g, '')
+                  .replace(/[^a-z]/g, '');
+    }
+
+    const acceptableKeyAnswers = ["temple", "thetemple", "the temple", "the temple."].map(normalize);
+
     const characterCards = [
       "You are Maluiks. You are one of the three Master Builders. You do not know who the others are. You will only work with people who have creative ideas, even if those ideas seem unrealistic at first.",
       "You are Marjoi. You know where the key to open the Gong box is hidden. You will only share this information with someone who has taken a class with this professor before. The key is hidden behind a digital scroll labeled 'The Real Rules' located in The Temple.",
@@ -98,15 +107,6 @@
 
     const correctBuilders = ["paba", "maluiks", "marjoi"];
     const correctAssistants = ["wekli", "quil"];
-  const acceptableKeyAnswers = ["temple", "thetemple", "the temple", "the temple."].map(normalize);
-
-
-    function normalize(input) {
-      return input.toLowerCase()
-                  .replace(/\band\b/g, '')
-                  .replace(/\s+/g, '')
-                  .replace(/[^a-z]/g, '');
-    }
 
     function arraysMatch(actual, expected) {
       const norm = arr => arr.map(e => normalize(e)).sort().join(',');
