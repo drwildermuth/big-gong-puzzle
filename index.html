@@ -44,7 +44,7 @@
 <body>
 
   <h1>🎉 Welcome to The Big Gong Puzzle 🎉</h1>
-  <p><strong>Instructions:</strong> Click the buttons below to draw your Character Card and Information Cards. Each student should draw <strong>1 character</strong> and <strong>2 information cards</strong>. If there are fewer than 8 students, volunteer to draw extra cards!</p>
+  <p><strong>Instructions:</strong> Click the buttons below to draw your Character Card and Information Cards. Each student should draw <strong>1 character</strong> and <strong>2 information cards</strong>. <em>Not all cards are unique</em> — some may be drawn more than once. Your team may need to draw extra cards and share findings to uncover the full picture. If you have fewer than 8 students, some players should volunteer to draw additional cards!</p>
 
   <button onclick="drawCard('character')">Draw Character Card</button>
   <button onclick="drawCard('info')">Draw Information Card</button>
@@ -52,9 +52,7 @@
   <div id="cards"></div>
 
   <h2>🔓 Unlock the Gong</h2>
-  <p>Once you believe you’ve identified the correct team and discovered the key, enter your answers below:</p>
-
-  <div class="hint">Use this format:<br><strong>Master Builders:</strong> Person, Person, and Person<br><strong>Assistants:</strong> Person and Person</div>
+  <div class="hint">Use this format:<br><strong>Master Builders:</strong> Person, Person, and Person<br><strong>Assistants:</strong> Person and Person<br><strong>Key:</strong> The Temple</div>
 
   <input id="builders" placeholder="Enter the names of the Master Builders"><br><br>
   <input id="assistants" placeholder="Enter the names of the Assistants"><br><br>
@@ -100,10 +98,13 @@
 
     const correctBuilders = ["paba", "maluiks", "marjoi"];
     const correctAssistants = ["wekli", "quil"];
-    const acceptableKeyAnswers = ["temple", "thetemple", "the temple"];
+    const acceptableKeyAnswers = ["temple", "thetemple", "the temple", "the temple."];
 
     function normalize(input) {
-      return input.toLowerCase().replace(/\s+/g, '');
+      return input.toLowerCase()
+                  .replace(/\band\b/g, '')
+                  .replace(/\s+/g, '')
+                  .replace(/[^a-z]/g, '');
     }
 
     function arraysMatch(actual, expected) {
