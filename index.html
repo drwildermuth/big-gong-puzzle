@@ -29,6 +29,16 @@
       max-width: 300px;
       margin-top: 20px;
     }
+    input {
+      width: 400px;
+      padding: 10px;
+      font-size: 16px;
+    }
+    .hint {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 20px;
+    }
   </style>
 </head>
 <body>
@@ -43,8 +53,11 @@
 
   <h2>🔓 Unlock the Gong</h2>
   <p>Once you believe you’ve identified the correct team and discovered the key, enter your answers below:</p>
-  <input id="builders" placeholder="Enter the names of the Master Builders (comma-separated)"><br><br>
-  <input id="assistants" placeholder="Enter the names of the Assistants (comma-separated)"><br><br>
+
+  <div class="hint">Use this format:<br><strong>Master Builders:</strong> Person, Person, and Person<br><strong>Assistants:</strong> Person and Person</div>
+
+  <input id="builders" placeholder="Enter the names of the Master Builders"><br><br>
+  <input id="assistants" placeholder="Enter the names of the Assistants"><br><br>
   <input id="key" placeholder="Where is the key hidden?"><br><br>
   <button onclick="checkSolution()">Submit</button>
   <div id="result"></div>
@@ -52,8 +65,8 @@
 
   <script>
     const characterCards = [
-      "You are Maluiks. You are one of the three Master Builders. You do not know who the other Master Builders are. You will only work with people who have creative ideas, even if those ideas seem unrealistic at first.",
-      "You are Marjoi. You know where the key to open the Gong box is hidden. You will only share this information with someone who has taken a class with this professor before. The key is hidden behind a digital scroll labeled 'The Real Rules.'",
+      "You are Maluiks. You are one of the three Master Builders. You do not know who the others are. You will only work with people who have creative ideas, even if those ideas seem unrealistic at first.",
+      "You are Marjoi. You know where the key to open the Gong box is hidden. You will only share this information with someone who has taken a class with this professor before. The key is hidden behind a digital scroll labeled 'The Real Rules' located in The Temple.",
       "You are Wekli. You are one of the Assistants. You will support the Master Builders by finding and organizing clues. You will only cooperate with people who value logical reasoning.",
       "You are Quil. You are one of the Assistants. You support the Master Builders by asking great questions. You will only cooperate with people who involve others in discussion before making decisions.",
       "You are Paba. You are one of the Master Builders. You don’t know who the others are. You’re excited to build something meaningful but are easily distracted. You will only work with people who keep you focused.",
@@ -87,7 +100,7 @@
 
     const correctBuilders = ["paba", "maluiks", "marjoi"];
     const correctAssistants = ["wekli", "quil"];
-    const correctKey = "therealrules";
+    const acceptableKeyAnswers = ["temple", "thetemple", "the temple"];
 
     function normalize(input) {
       return input.toLowerCase().replace(/\s+/g, '');
@@ -105,7 +118,7 @@
 
       const buildersMatch = arraysMatch(userBuilders, correctBuilders);
       const assistantsMatch = arraysMatch(userAssistants, correctAssistants);
-      const keyMatch = userKey === correctKey;
+      const keyMatch = acceptableKeyAnswers.includes(userKey);
 
       const resultDiv = document.getElementById("result");
       const gif = document.getElementById("celebrationGif");
